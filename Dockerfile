@@ -14,11 +14,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
+# Make start script executable
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Create SQLite database directory
 RUN mkdir -p /app/data
 
-# Expose port (Render will set PORT env var)
-EXPOSE $PORT
+# Expose port (hosting platform will set PORT env var)
+EXPOSE 8000
 
-# Run the application
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]
+# Use start script as default command
+CMD ["./start.sh"]
